@@ -1,0 +1,42 @@
+:root {
+  --bg: #070a10;
+  --panel: rgba(9, 13, 20, 0.82);
+  --line: rgba(120, 160, 200, 0.22);
+  --text: #dfe8f5;
+  --muted: #8b9bb0;
+  --accent: #4ee0ff;
+  --hot: #ff3b5c;
+
+  color-scheme: dark;
+  font-family: 'Pretendard', 'Inter', -apple-system, BlinkMacSystemFont,
+    'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', 'Segoe UI',
+    'Helvetica Neue', Arial, sans-serif;
+  word-break: keep-all;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  /* The game owns every pointer event via pointer lock. */
+  user-select: none;
+  cursor: default;
+}
+
+canvas {
+  display: block;
+  outline: none;
+}
