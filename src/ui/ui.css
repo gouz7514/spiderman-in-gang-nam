@@ -513,6 +513,69 @@
   }
 }
 
+/* ------------------------------------------------------------ photo pause */
+
+/* Dragging the paused city orbits the view, so say so with the cursor. */
+.app--paused {
+  cursor: grab;
+}
+
+.app--paused:active {
+  cursor: grabbing;
+}
+
+
+/* The whole overlay for a photo pause. Top-left, small, and translucent: it has
+   to say the game is stopped without spoiling the shot the pause was taken
+   for. Above the debug panel, which shares this corner. */
+.pause-notice {
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  z-index: 8;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 8px 12px 9px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(9, 13, 20, 0.62);
+  backdrop-filter: blur(6px);
+  color: rgba(223, 232, 245, 0.82);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.pause-notice:hover {
+  border-color: var(--accent);
+}
+
+.pause-notice__mark {
+  color: var(--accent);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}
+
+.pause-notice__label {
+  letter-spacing: 0.24em;
+}
+
+.pause-notice__hint {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+@media (max-height: 640px), (max-width: 720px) {
+  .pause-notice {
+    left: 14px;
+    top: 14px;
+    padding: 6px 9px 7px;
+    font-size: 10px;
+  }
+}
+
 /* ---------------------------------------------------------------- minimap */
 
 .minimap {

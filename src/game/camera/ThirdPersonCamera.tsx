@@ -75,9 +75,11 @@ export function ThirdPersonCamera() {
 
     /* Orbit pivot, leading in the direction of travel ---------------------- */
     // No lead in selfie view: the point is a steady shot of the player, not a
-    // look at where they are going.
+    // look at where they are going. None in a photo pause either — the lead is
+    // what pushes the player off-centre, and a paused frame is a photograph, so
+    // it wants the subject centred rather than the road ahead.
     leadTarget.set(0, 0, 0);
-    if (!selfie && player.speed > 3) {
+    if (!selfie && !gameState.paused && player.speed > 3) {
       leadTarget
         .copy(player.velocity)
         .divideScalar(player.speed)
@@ -92,9 +94,11 @@ export function ThirdPersonCamera() {
     /* Orbit position ------------------------------------------------------- */
     // Selfie view puts the camera on the *far* side of the pivot — out in front
     // of the player, along the direction they face — instead of behind them.
-    const distance = selfie
-      ? CAMERA.selfieDistance
-      : MathUtils.lerp(CAMERA.minDistance, CAMERA.maxDistance, speedFactor);
+    const distance =
+      (selfie
+        ? CAMERA.selfieDistance
+        : MathUtils.lerp(CAMERA.minDistance, CAMERA.maxDistance, speedFactor)) *
+      cameraState.zoom;
     cameraForward(cameraState.yaw, cameraState.pitch, forward);
     desired.copy(pivot).addScaledVector(forward, selfie ? distance : -distance);
 

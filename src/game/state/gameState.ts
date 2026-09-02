@@ -49,6 +49,8 @@ export interface GameState {
     pitch: number;
     /** Selfie view: camera in front of the player, looking back at them. */
     selfie: boolean;
+    /** Wheel zoom, as a multiplier on the orbit distance. 1 is the default. */
+    zoom: number;
     /** Live FOV, driven by speed. */
     fov: number;
     /** Unit forward vector of the camera, refreshed every frame. */
@@ -80,6 +82,11 @@ export interface GameState {
   };
   /** Number of respawns so far; the HUD uses it to flash a message. */
   respawnCount: number;
+  /**
+   * Photo pause (P). Owned by `state/input.ts`; mirrored here so the camera can
+   * read it without importing the input module.
+   */
+  paused: boolean;
 }
 
 export const gameState: GameState = {
@@ -95,6 +102,7 @@ export const gameState: GameState = {
     yaw: 0,
     pitch: 0.12,
     selfie: false,
+    zoom: 1,
     fov: CAMERA.fovBase,
     forward: new Vector3(0, 0, -1),
     position: new Vector3(),
@@ -123,6 +131,7 @@ export const gameState: GameState = {
     fps: 0,
   },
   respawnCount: 0,
+  paused: false,
 };
 
 /** Restores the mutable state to a clean slate (used on respawn). */

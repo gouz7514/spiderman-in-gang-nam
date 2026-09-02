@@ -209,6 +209,13 @@ so the orbit radius, and therefore the framing, is preserved. At steep upward
 pitch on the ground the player does leave the frame — that is geometry, not a
 bug, and the aim keeps working throughout.
 
+The wheel zoom (`gameState.camera.zoom`) is a **multiplier on the orbit
+distance**, not a distance of its own, and it is applied before the floor clamp
+and the occlusion ray — so the speed pull-back, the selfie framing and both
+constraints all keep working at any zoom. Zooming with FOV instead would fight
+the speed FOV for the same value.
+
+
 ### Physics step ordering
 
 `PHYSICS.timeStep` must stay equal to the `<Physics timeStep>` prop — the controller uses
@@ -426,6 +433,55 @@ All player-facing strings are Korean. The control list is defined once in
 in-game reference panel — add a control there, not in either component. HUD
 corners are taken: speed bottom-left, debug top-left, controls top-right,
 minimap bottom-right.
+
+**The photo pause (P) is a pause with no menu.** Esc already pauses, but it
+brings the title card up over the city, which makes it useless for taking a
+screenshot — the thing players actually want to do when they stop. P gives up
+pointer lock exactly the same way, so the simulation and the HUD stop with it,
+but `App` suppresses the title card and draws only a small corner badge. Zoom
+stays live throughout, because framing the shot is the point.
+
+It lives in `state/input.ts`, not in React: pointer lock may only be *requested*
+from inside a real user gesture, so the key handler has to call for it directly
+and merely notifies React afterwards. Esc during the pause drops to the title
+card (there is no lock left for Esc to release), and clicking back into the city
+ends the pause through the same lock-change path.
+
+The paused view is still steerable: **dragging orbits it**, at the same
+sensitivity as playing, because `movementX/Y` is reported with or without
+pointer lock — the drag feeds the identical `applyLook`. A drag that starts on
+the badge is ignored, or the click that resumes the game would never land.
+
+**A paused frame also drops the speed lead.** `CAMERA.lookAhead` pushes the
+orbit pivot up to 4 m along the velocity, which is most of what makes fast
+movement feel fast — and it is also why the player sits well off-centre in a
+frame paused mid-swing. `gameState.paused` (mirrored from the input module so
+the camera need not import it) zeroes the lead target, and the existing
+smoothing walks the subject back to the middle. Everything else — the floor
+clamp, the occlusion ray, the zoom — is left alone.
+
+
+### The menus are a spider tracker
+
+Every full-screen overlay — title, pause, loading, error — renders through
+`TrackerFrame`, the handheld from the films: a sky-blue case with a status
+strip, a navy map screen and jelly-bean keys. They are one device in different
+states rather than three dialogs, so a new screen belongs inside the frame, not
+beside it. The in-game HUD is deliberately *not* dressed this way: it has to
+stay legible over the city at 200 km/h.
+
+Two things break the look the moment they are "tidied up":
+
+- **Galmuri is a bitmap face.** It is only crisp at 11 px and whole multiples
+  of it, which is why menu sizes are 11 / 22 / 33 / 44 and step by media query
+  instead of using `clamp()`, and why `.overlay` sets
+  `-webkit-font-smoothing: none`. It is vendored as two woff2 files in
+  `src/assets/fonts` under the SIL OFL; the npm package ships 65 MB of ttf and
+  bdf that Vite would copy into the bundle wholesale.
+- **Nothing is rounded and nothing is blurred.** The chrome is square-edged
+  `box-shadow` stacks measured in `--px`, and one border-radius anywhere stops
+  the device reading as 8-bit. `image-rendering: pixelated` on the avatar
+  preview and the QR is part of the same rule.
 
 The avatar is drawn as a **gingerbread figure**, and there
 is only one of it — the old five-preset picker is gone. A head sphere over a

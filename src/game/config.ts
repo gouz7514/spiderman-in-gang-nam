@@ -233,6 +233,16 @@ export const CAMERA = {
   groundProbeDistance: 400,
 
   /**
+   * Mouse-wheel zoom, as a *multiplier* on the orbit distance rather than a
+   * distance of its own: the speed pull-back and the selfie framing both keep
+   * working, scaled by whatever the player has dialled in.
+   */
+  zoomMin: 0.45,
+  zoomMax: 2.6,
+  /** Per unit of wheel delta, applied exponentially so every notch feels equal. */
+  zoomSensitivity: 0.0015,
+
+  /**
    * Selfie view (F): the camera swings round to the front of the player and
    * looks back at them. Closer in and raised to head height, so it frames the
    * face rather than the whole body.
