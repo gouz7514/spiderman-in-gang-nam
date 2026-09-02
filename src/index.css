@@ -1,3 +1,27 @@
+/* Galmuri is a bitmap face: it only stays crisp at 11 px and whole multiples of
+   it, so every menu size is 11 / 22 / 33 / 44 and stepped by media query rather
+   than clamped. Vendored as woff2 (SIL OFL, see assets/fonts/Galmuri-OFL.md);
+   the npm package ships 65 MB of ttf/bdf that would end up in the bundle. */
+@font-face {
+  font-family: Galmuri11;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local('Galmuri11 Regular'),
+    url('./assets/fonts/Galmuri11.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: Galmuri11;
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    local('Galmuri11 Bold'),
+    url('./assets/fonts/Galmuri11-Bold.woff2') format('woff2');
+}
+
 :root {
   --bg: #070a10;
   --panel: rgba(9, 13, 20, 0.82);
@@ -6,6 +30,31 @@
   --muted: #8b9bb0;
   --accent: #4ee0ff;
   --hot: #ff3b5c;
+
+  /* Spider tracker palette — the handheld from the film: a sky-blue case, a
+     navy map screen, and jelly-bean keys in coral / mint / amber. */
+  --px: 3px;
+  --ink: #10173a;
+  --case: #58b4e4;
+  --case-dark: #3d8fc4;
+  --case-light: #8ad3f2;
+  --screen: #17205e;
+  --screen-line: #2b3a9c;
+  --screen-dim: #1d2872;
+  --coral: #f0897b;
+  --coral-dark: #c96559;
+  --mint: #7cd9a0;
+  --mint-dark: #55ab79;
+  --amber: #f2a95c;
+  --amber-dark: #c8823c;
+  --slate: #9db2c9;
+  --slate-dark: #74889d;
+  --lcd: #9de8ae;
+  --lcd-ink: #1d5334;
+  --paper: #f4f7ff;
+
+  --font-pixel: Galmuri11, 'Apple SD Gothic Neo', 'Malgun Gothic',
+    'Noto Sans KR', monospace;
 
   color-scheme: dark;
   font-family: 'Pretendard', 'Inter', -apple-system, BlinkMacSystemFont,

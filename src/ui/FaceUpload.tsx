@@ -92,6 +92,7 @@ export function FaceUpload({ face, faceImage, onChange }: FaceUploadProps) {
 
   return (
     <div className="face-upload">
+      <span className="face-upload__title">A.1 · 아바타</span>
       <canvas
         ref={canvasRef}
         className="face-upload__preview face-upload__preview--draggable"
@@ -110,14 +111,14 @@ export function FaceUpload({ face, faceImage, onChange }: FaceUploadProps) {
       </p>
 
       <div className="face-upload__actions">
-        <label className="face-upload__button">
+        <label className="pixel-btn pixel-btn--amber">
           사진 선택
           <input type="file" accept="image/*" onChange={pickFile} hidden />
         </label>
         {face && (
           <button
             type="button"
-            className="face-upload__button face-upload__button--ghost"
+            className="pixel-btn pixel-btn--slate"
             onClick={() => {
               onChange(null);
               setError(null);

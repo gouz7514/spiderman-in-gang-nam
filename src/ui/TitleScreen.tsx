@@ -2,6 +2,7 @@ import type { CustomFace } from "../game/player/customFace";
 import type { SkyMode } from "../game/world/skyState";
 import { CONTROLS } from "./controls";
 import { FaceUpload } from "./FaceUpload";
+import { TrackerFrame } from "./TrackerFrame";
 
 interface TitleScreenProps {
   /** True when the player has already been in the city and lost pointer lock. */
@@ -31,53 +32,63 @@ export function TitleScreen({
   skyMode,
   onSelectSkyMode,
 }: TitleScreenProps) {
+  const deck = (
+    <>
+      <div className="deck__group" role="radiogroup" aria-label="시간대">
+        <span className="deck__label">TIME</span>
+        {SKY_MODES.map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            role="radio"
+            aria-checked={option.value === skyMode}
+            className={`pixel-btn pixel-btn--mint${
+              option.value === skyMode ? " pixel-btn--on" : ""
+            }`}
+            onClick={() => onSelectSkyMode(option.value)}
+          >
+            {option.label}
+          </button>
+        ))}
+        <span className="deck__note">자동은 현재 한국 시각 기준</span>
+      </div>
+
+      <button
+        type="button"
+        className="pixel-btn pixel-btn--coral pixel-btn--wide"
+        onClick={onEnter}
+      >
+        {paused ? "계속하기" : "시작하기"}
+      </button>
+    </>
+  );
+
   return (
     <div className="overlay">
-      <div className="overlay__panel">
-        <p className="overlay__eyebrow">
-          {paused ? "일시정지" : "서울 · 강남역"}
-        </p>
-        <h1 className="overlay__title">SPIDERMAN in GANG-NAM</h1>
-        <p className="overlay__subtitle">강남의 스파이더맨이 되어보자</p>
+      <TrackerFrame deck={deck}>
+
+        <h1 className="tracker__title">
+          SPIDERMAN
+          <span className="tracker__title-line">in GANG-NAM</span>
+        </h1>
+        <p className="tracker__subtitle">강남의 스파이더맨이 되어보자</p>
 
         <FaceUpload face={face} faceImage={faceImage} onChange={onChangeFace} />
 
-        <div className="sky-modes" role="radiogroup" aria-label="시간대">
-          {SKY_MODES.map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              role="radio"
-              aria-checked={option.value === skyMode}
-              className={`sky-mode${option.value === skyMode ? " sky-mode--active" : ""}`}
-              onClick={() => onSelectSkyMode(option.value)}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-        <p className="sky-modes__note">자동 선택 시 현재 한국 시각 기준</p>
-
-        <div className="controls">
+        <div className="keys">
           {CONTROLS.map(({ key, label }) => (
-            <div className="controls__row" key={key}>
-              <span className="controls__key">{key}</span>
-              <span className="controls__label">{label}</span>
+            <div className="keys__row" key={key}>
+              <span className="keys__cap">{key}</span>
+              <span className="keys__label">{label}</span>
             </div>
           ))}
         </div>
 
-        <button type="button" className="button" onClick={onEnter}>
-          {paused ? "계속하기" : "시작하기"}
-        </button>
-
-        <p className="overlay__note">
-          OpenStreetMap 데이터에서 실제 건물 {buildingCount.toLocaleString()}
-          개를 불러왔어요.
-          <br />
-          데이터는 24시간마다 갱신돼요.
+        <p className="tracker__note">
+          OSM 실측 건물 {buildingCount.toLocaleString()}동 로드 완료 · 24시간마다
+          갱신
         </p>
-      </div>
+      </TrackerFrame>
 
       <div className="credit">
         <a
