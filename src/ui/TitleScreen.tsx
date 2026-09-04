@@ -66,12 +66,10 @@ export function TitleScreen({
   return (
     <div className="overlay">
       <TrackerFrame deck={deck}>
-
         <h1 className="tracker__title">
           SPIDERMAN
           <span className="tracker__title-line">in GANG-NAM</span>
         </h1>
-        <p className="tracker__subtitle">강남의 스파이더맨이 되어보자</p>
 
         <FaceUpload face={face} faceImage={faceImage} onChange={onChangeFace} />
 
@@ -85,8 +83,8 @@ export function TitleScreen({
         </div>
 
         <p className="tracker__note">
-          OSM 실측 건물 {buildingCount.toLocaleString()}동 로드 완료 · 24시간마다
-          갱신
+          OpenStreetMap {buildingCount.toLocaleString()}개 건물 불러오기 완료 ·
+          24시간마다 갱신
         </p>
       </TrackerFrame>
 

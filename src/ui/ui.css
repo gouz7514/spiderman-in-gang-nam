@@ -120,7 +120,7 @@
 }
 
 .signal::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   bottom: calc(var(--px) * -2);
@@ -331,7 +331,7 @@
 }
 
 .credit__qr {
-  width: 92px;
+  width: 120px;
   height: auto;
   display: block;
   padding: var(--px);
@@ -345,7 +345,7 @@
   font-family: var(--font-pixel);
   font-size: 11px;
   color: var(--case-light);
-  text-decoration: none;
+  text-decoration: underline;
   pointer-events: auto;
 }
 
@@ -653,7 +653,6 @@
 .app--paused:active {
   cursor: grabbing;
 }
-
 
 /* The whole overlay for a photo pause. Top-left, small, and translucent: it has
    to say the game is stopped without spoiling the shot the pause was taken
