@@ -553,6 +553,26 @@ threaded App -> GameCanvas -> Scene -> Player as a prop. `useFaceImage` decodes
 it once so the avatar and the preview share one `HTMLImageElement`, and App
 debounces the write because dragging the crop fires on every pointer move.
 
+## Deployment
+
+The build is pushed to GitHub Pages by `.github/workflows/deploy.yml` on every
+push to `main`, from the `dist` artifact — there is no `gh-pages` branch and
+nothing is committed back to the repo.
+
+It is served from a **project path**, not a domain root, so `vite.config.ts`
+sets `base: '/spiderman-in-gang-nam/'`. Vite rewrites asset URLs it can see in
+the HTML and in imports, but not ones a module builds by hand: any runtime path
+to a `public/` file has to go through `import.meta.env.BASE_URL`, as
+`fetchBuildings.ts` (the offline snapshot) and `TitleScreen.tsx` (the credit QR)
+already do. A leading `/` there points at the domain root and 404s in
+production while working perfectly in `pnpm dev`.
+
+The `og:`/`twitter:` image URLs in `index.html` are absolute for the same
+reason, and because crawlers have no base to resolve a relative one against.
+
+There is no SPA fallback and none is needed — the app is a single page with no
+router, so Pages' own 404 never comes up.
+
 ## Attribution
 
 City data is © OpenStreetMap contributors under the ODbL, credited on the loading screen.
