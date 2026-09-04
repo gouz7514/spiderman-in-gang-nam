@@ -206,6 +206,8 @@ export function buildSubwayEntrances(city: CityData): SubwayEntranceGeometry {
     wallThickness: T,
     totemHeight,
     totemSize,
+    signWidth,
+    signHeight,
   } = ENTRANCES;
 
   let placed = 0;
@@ -242,6 +244,14 @@ export function buildSubwayEntrances(city: CityData): SubwayEntranceGeometry {
     const totemV = W + ENTRANCES.totemOffset;
     emitBox(structure, frame, totemU, totemU + totemSize, totemV, totemV + totemSize, 0, totemHeight, totem);
 
+    /* The board itself, straddling the post so its edges are solid from any
+       angle rather than two panels floating either side of a gap. */
+    const signU0 = totemU + totemSize / 2 - signWidth / 2;
+    const signU1 = signU0 + signWidth;
+    const panelY0 = ENTRANCES.signBottom;
+    const panelY1 = panelY0 + signHeight;
+    emitBox(structure, frame, signU0, signU1, totemV, totemV + totemSize, panelY0, panelY1, totem);
+
     /* Atlas cell for this exit. */
     const column = placed % columns;
     const row = Math.floor(placed / columns);
@@ -270,17 +280,15 @@ export function buildSubwayEntrances(city: CityData): SubwayEntranceGeometry {
     const vTop = 1 - cellY / ENTRANCES.atlasHeight - insetV;
     const vBottom = 1 - (cellY + ENTRANCES.cellHeight) / ENTRANCES.atlasHeight + insetV;
 
-    /* A panel on each broad face of the totem, readable from both directions. */
-    const panelY0 = ENTRANCES.signBottom;
-    const panelY1 = ENTRANCES.signBottom + ENTRANCES.signHeight;
+    /* A face on each broad side of the board, readable from both directions. */
     const stand = 0.012;
     for (const side of [1, -1]) {
       const v = side > 0 ? totemV + totemSize + stand : totemV - stand;
       // Wind so the face looks outward along `side`.
-      const a = place(frame, side > 0 ? totemU : totemU + totemSize, v, panelY0);
-      const b = place(frame, side > 0 ? totemU + totemSize : totemU, v, panelY0);
-      const c = place(frame, side > 0 ? totemU + totemSize : totemU, v, panelY1);
-      const d = place(frame, side > 0 ? totemU : totemU + totemSize, v, panelY1);
+      const a = place(frame, side > 0 ? signU0 : signU1, v, panelY0);
+      const b = place(frame, side > 0 ? signU1 : signU0, v, panelY0);
+      const c = place(frame, side > 0 ? signU1 : signU0, v, panelY1);
+      const d = place(frame, side > 0 ? signU0 : signU1, v, panelY1);
       for (const p of [a, b, c, a, c, d]) signPositions.push(p.x, p.y, p.z);
       signUvs.push(u0, vBottom, u1, vBottom, u1, vTop, u0, vBottom, u1, vTop, u0, vTop);
     }

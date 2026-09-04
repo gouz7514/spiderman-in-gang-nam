@@ -352,18 +352,27 @@ export const ENTRANCES = {
   totemHeight: 2.5,
   totemSize: 0.3,
   totemOffset: 0.28,
-  signBottom: 1.35,
-  signHeight: 0.85,
+
+  /**
+   * The exit board is a landscape panel bolted across the totem, wider than the
+   * post it hangs on, exactly as Seoul Metro's own signage is. Its 2:1 shape
+   * has to match the atlas cell's: the text is drawn into a landscape cell, so
+   * mapping that cell onto a portrait quad squeezes the Hangul until "강남역"
+   * is a smear.
+   */
+  signWidth: 1.2,
+  signHeight: 0.6,
+  signBottom: 1.6,
 
   railingColor: '#767b83',
   totemColor: '#1b1e23',
   mouthColor: '#080a0e',
   treadColor: '#3d434c',
 
-  atlasWidth: 1024,
+  atlasWidth: 2048,
   atlasHeight: 1024,
-  cellWidth: 256,
-  cellHeight: 128,
+  cellWidth: 512,
+  cellHeight: 256,
 } as const;
 
 export const SKY = {

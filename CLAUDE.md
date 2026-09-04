@@ -414,6 +414,13 @@ The stair mouth is a dark panel a few centimetres **above** the pavement rather
 than a hole: the ground is a single opaque plane with nothing underneath, so
 anything sunk below it would just be hidden by the ground.
 
+The exit board is a landscape panel wider than the totem it hangs on, and its
+proportions are load-bearing: the text is drawn into a landscape atlas cell, so
+`signWidth / signHeight` has to match `cellWidth / cellHeight` or the Hangul is
+squeezed sideways into an unreadable smear. The board is emitted as a box that
+straddles the post, so its edges stay solid instead of reading as two floating
+panels with the post visible between them.
+
 ## Minimap
 
 `buildMinimap` bakes the whole city plan into one offscreen canvas at load time
